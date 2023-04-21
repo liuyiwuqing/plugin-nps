@@ -1,0 +1,19 @@
+apiVersion: nps.lywq.site/v1alpha1
+kind: Plugin
+metadata:
+  name: PluginNps
+spec:
+  enabled: true
+  version: 1.0.0
+  requires: ">=2.4.0"
+  author:
+    name: lywq
+    website: https://lywq.muyin.site
+  logo: logo.svg
+  configMapName: plugin-nps-config
+  settingName: plugin-nps-settings
+  homepage: https://github.com/liuyiwuqing/plugin-nps
+  displayName: "Nps管理"
+  description: "Nps管理模块"
+  license:
+    - name: "MIT"

@@ -1,0 +1,55 @@
+plugins {
+    id "com.github.node-gradle.node" version "3.3.0"
+    id "io.freefair.lombok" version "8.0.0-rc2"
+    id "io.github.guqing.plugin-development" version "0.0.6-SNAPSHOT"
+    id 'java'
+}
+
+group 'site.lywq.nps'
+sourceCompatibility = JavaVersion.VERSION_17
+
+repositories {
+    mavenCentral()
+    maven { url 'https://s01.oss.sonatype.org/content/repositories/snapshots' }
+}
+
+jar {
+    enabled = true
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    manifest.attributes('Plugin-Version': "${project.version}",)
+    into('lib') {
+        from configurations.runtimeClasspath
+    }
+}
+
+dependencies {
+    implementation platform('run.halo.tools.platform:plugin:2.5.0-SNAPSHOT')
+    compileOnly 'run.halo.app:api'
+
+    testImplementation 'run.halo.app:api'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+node {
+    nodeProjectDir = file("${project.projectDir}/console")
+}
+
+task pnpmInstall(type: NpxTask) {
+    command = "pnpm@7"
+    args = ["install"]
+}
+
+task buildFrontend(type: NpxTask) {
+    command = 'pnpm@7'
+    args = ['build']
+    dependsOn("pnpmInstall")
+}
+
+build {
+    // build frontend before build
+    tasks.getByName('compileJava').dependsOn('buildFrontend')
+}
