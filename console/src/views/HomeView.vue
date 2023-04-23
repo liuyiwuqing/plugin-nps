@@ -17,7 +17,7 @@ const getNpsUser = async () => {
     operationData.userInfo = data.data;
     operationData.userExist = true;
   } else {
-    operationData.userInfo = data.data;
+    operationData.userInfo.userName = data.data.userName;
     operationData.userExist = false;
     Toast.warning(data.msg);
   }
@@ -60,10 +60,10 @@ getNpsUser();
   </VPageHeader>
   <div class="nps-container">
     <div class="nps-form-group">
-      <h1>NPS账号{{ operationData.userExist ? '登录' : '注册' }}</h1>
+      <div class="nps-title">NPS账号{{ operationData.userExist ? '登录' : '注册' }}</div>
       <form @submit.prevent="loginOrRegister">
         <div>
-          <label for="loginUserName">用户名：</label>
+          <label for="loginUserName">账号：</label>
           <input type="text" id="loginUserName" v-model="operationData.userInfo.userName" disabled>
         </div>
         <div v-show="!operationData.userExist">
@@ -74,7 +74,6 @@ getNpsUser();
         <button class="nps-button" type="submit">{{ operationData.userExist ? '登录' : '注册' }}</button>
       </form>
     </div>
-
   </div>
 </template>
 <style>
@@ -83,6 +82,13 @@ getNpsUser();
   padding-right: .5rem;
   padding-left: .5rem;
   padding-top: 10rem;
+}
+
+.nps-title {
+  font-size: 30px;
+  font-weight: bold;
+  text-align: center;
+  line-height: 80px;
 }
 
 .nps-form-group {
@@ -96,6 +102,7 @@ getNpsUser();
 .nps-form-group label {
   display: block;
   margin-bottom: 5px;
+
 }
 
 .nps-form-group input[type='text'], .nps-form-group input[type='password'] {
@@ -123,4 +130,5 @@ getNpsUser();
   margin-top: 20px;
   margin-bottom: 5px;
 }
+
 </style>
